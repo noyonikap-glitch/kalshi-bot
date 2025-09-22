@@ -31,9 +31,12 @@ def main():
 
     # --- Init layers ---
     client = KalshiClient()
-    client.login()
-    me = client.me()
-    print(f"[*] Logged in as {me.get('member', {}).get('email')}")
+    #client.login()
+    #me = client.me()
+    balance = client.balance()
+    #print(f"[*] Logged in as {me.get('member', {}).get('email')}")
+    print(f"[*] Current balance {balance}")
+    print(balance)
 
     risk_mgr = RiskManager(max_inventory=20, pnl_stop_cents=-3000)
     strat_cls = STRAT_MAP[args.strategy]
@@ -50,7 +53,7 @@ def main():
     while True:
         try:
             ob = client.get_orderbook(args.ticker)
-            acct = client.account()
+            acct = client.balance()
             pos = client.list_positions()
 
             intents = strat.on_book(ob, pos, acct)
